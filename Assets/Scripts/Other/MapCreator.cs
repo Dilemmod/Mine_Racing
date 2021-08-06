@@ -27,6 +27,8 @@ public class MapCreator : MonoBehaviour
             cloneBetween.transform.Rotate(0, 0, tempX);
         else
             cloneBetween.transform.Rotate(0, 0, -tempX);
+        //Перенос в папку родителя
+        cloneBetween.transform.parent = this.gameObject.transform;
     }
     private void Awake()
     {
@@ -38,6 +40,9 @@ public class MapCreator : MonoBehaviour
         {
             pointA = edgCollider2D.points[i];
             pointB = edgCollider2D.points[i+1] ;
+            //1.5 - 0.25 = 1.25 для точного размешения блоков
+            pointA.z = -0.5f;
+            pointB.z = -0.5f;
             CreatingShapeBetweenPoints(pointA, pointB);
         }
     }
