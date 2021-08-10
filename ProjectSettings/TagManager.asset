@@ -12,6 +12,7 @@ TagManager:
   - Block 25
   - Block 100
   - Block 500
+  - BlocksParent
   layers:
   - Default
   - TransparentFX

@@ -59,19 +59,27 @@ public class FirstPersonController : MonoBehaviour
 
     #endregion
     #endregion
+    #region Singleton
+    public static FirstPersonController Instance;
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
-
-        crosshairObject = GetComponentInChildren<Image>();
-
-        // Set internal variables
-        playerCamera.fieldOfView = fov;
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
     }
+    #endregion
 
     void Start()
     {
+        //Awake
+        rb = GetComponent<Rigidbody>();
+        crosshairObject = GetComponentInChildren<Image>();
+        // Set internal variables
+        playerCamera.fieldOfView = fov;
+
+
         if (lockCursor)
         {
             Cursor.lockState = CursorLockMode.Locked;
