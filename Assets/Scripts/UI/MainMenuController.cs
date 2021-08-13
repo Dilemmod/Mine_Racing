@@ -6,20 +6,25 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuController : BaseGameMenuController
 {
-    [Header("Main menu")]
-    [SerializeField] private GameObject MainMenu;
+    [Header("Player menu")]
     [SerializeField] private GameObject levelMenu;
-    [SerializeField] protected Button chooseLevel;
-    //[SerializeField] protected Button reset;
-    [SerializeField] protected Button closeMenu;
+    [SerializeField] private GameObject tuningMenu;
+    [SerializeField] private GameObject playerMenu;
+    [SerializeField] protected Button buttonToLevelMenu;
+    [SerializeField] protected Button buttonToTuningMenu;
+    [SerializeField] protected Button buttonToMainMenu;
+    [SerializeField] protected Button buttonToPlayerMenu;
 
-    private int lvl=1;
+    [Header("Main menu")]
+    [SerializeField] protected Button more;
+    //[SerializeField] protected Button closeLevelMenu;
     protected override void Start()
     {
         base.Start();
-        chooseLevel.onClick.AddListener(OnLvlMenuClecked);
-        closeMenu.onClick.AddListener(OnLvlMenuClecked);
-        play.onClick.AddListener(OnPlayClicked);
+        //buttonToLevelMenu.onClick.AddListener(OnLvlMenuClecked);
+        //closeLevelMenu.onClick.AddListener(OnLvlMenuClecked);
+        buttonToPlayerMenu.onClick.AddListener(OnPlayerMenuClecked);
+        buttonToMainMenu.onClick.AddListener(OnPlayerMenuClecked);
         //reset.onClick.AddListener(OnResetClicked);
         /*
         if (PlayerPrefs.HasKey(GamePrefs.LastPlayedLvl.ToString()))
@@ -30,14 +35,19 @@ public class MainMenuController : BaseGameMenuController
 
         audioManager.Play(UIClipName.BackgroundMusic);
     }
-    protected override void Update() { }
     protected override void OnDestroy()
     {
         base.OnDestroy();
         //reset.onClick.RemoveListener(levelManager.ResetProgres);
-        chooseLevel.onClick.RemoveListener(OnLvlMenuClecked);
-        closeMenu.onClick.RemoveListener(OnLvlMenuClecked);
+       // buttonToLevelMenu.onClick.RemoveListener(OnLvlMenuClecked);
+        //closeLevelMenu.onClick.RemoveListener(OnLvlMenuClecked);
         play.onClick.RemoveListener(OnPlayClicked);
+    }
+    private void OnPlayerMenuClecked()
+    {
+        audioManager.Play(UIClipName.LvlMenu);
+        playerMenu.SetActive(!playerMenu.activeInHierarchy);
+        OnChangeMenuStatusClicked();
     }
     private void OnLvlMenuClecked()
     {
@@ -45,15 +55,16 @@ public class MainMenuController : BaseGameMenuController
         levelMenu.SetActive(!levelMenu.activeInHierarchy);
         OnChangeMenuStatusClicked();
     }
+    private void OnPlayClicked()
+    {
+        audioManager.Play(UIClipName.Play);
+        menu.SetActive(!menu.activeInHierarchy);
+        OnChangeMenuStatusClicked();
+    }
     private void OnResetClicked()
     {
         audioManager.Play(UIClipName.Reset);
        // play.GetComponentInChildren<Text>().text = "NEW GAME";
         levelManager.ResetProgres();
-    }
-    private void OnPlayClicked()
-    {
-        audioManager.Play(UIClipName.Play);
-        //levelManager.ChangeLvl(lvl);
     }
 }
