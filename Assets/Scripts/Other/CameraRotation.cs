@@ -11,6 +11,23 @@ public class CameraRotation : MonoBehaviour
 	private bool firstTurn = true;
 	private float rotationY;
 
+	private bool rotateOn=true;
+	#region Singleton
+	public static CameraRotation Instance;
+	private void Awake()
+	{
+		if (Instance == null)
+			Instance = this;
+		else Destroy(gameObject);
+	}
+	#endregion
+	public void RotationSwitch() 
+	{
+		if (rotateOn)
+			rotateOn = false;
+		else
+			rotateOn = true;
+	}
 	void CameraRotate(Vector3 direction)
     {
 		rotationY = transform.localRotation.eulerAngles.y;
@@ -28,14 +45,14 @@ public class CameraRotation : MonoBehaviour
 
 	void FixedUpdate()
 	{
+		if (!rotateOn)
+			return;
 		if (firstTurn)
 		{
-			Debug.Log("1");
 			CameraRotate(Vector3.up);
 		}
 		else
 		{
-			Debug.Log("2");
 			CameraRotate(Vector3.down);
 		}
 	}
