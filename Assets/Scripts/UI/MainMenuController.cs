@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using static CameraMoving;
+using static CameraControllerMainMenu;
 
 public class MainMenuController : BaseGameMenuController
 {
@@ -19,14 +19,12 @@ public class MainMenuController : BaseGameMenuController
     [Header("Main menu")]
     [SerializeField] protected Button more;
 
-    private CameraRotation cameraRotation;
-    private CameraMoving cameraMoving;
+    private CameraControllerMainMenu cameraControllerMainMenu;
     //[SerializeField] protected Button closeLevelMenu;
     protected override void Start()
     {
         base.Start();
-        cameraRotation = CameraRotation.Instance;
-        cameraMoving = CameraMoving.Instance;
+        cameraControllerMainMenu = CameraControllerMainMenu.Instance;
         //buttonToLevelMenu.onClick.AddListener(OnLvlMenuClecked);
         //closeLevelMenu.onClick.AddListener(OnLvlMenuClecked);
         buttonToPlayerMenu.onClick.AddListener(OnPlayClecked);
@@ -51,9 +49,9 @@ public class MainMenuController : BaseGameMenuController
     private void OnBackClecked()
     {
         //камера главного меню 
-        cameraMoving.moveTo = MenuPosition.mainTarget;
+        cameraControllerMainMenu.moveTo = MenuPosition.mainTarget;
         ///стоп поворот
-        cameraRotation.RotationSwitch();
+        cameraControllerMainMenu.RotationSwitch();
 
         playerMenu.SetActive(!playerMenu.activeInHierarchy);
         audioManager.Play(UIClipName.Play);
@@ -63,9 +61,9 @@ public class MainMenuController : BaseGameMenuController
     private void OnPlayClecked()
     {
         //камера главного игрока
-        cameraMoving.moveTo = MenuPosition.playerTarget;
+        cameraControllerMainMenu.moveTo = MenuPosition.playerTarget;
         ///стоп поворот
-        cameraRotation.RotationSwitch();
+        cameraControllerMainMenu.RotationSwitch();
 
         playerMenu.SetActive(!playerMenu.activeInHierarchy);
         audioManager.Play(UIClipName.Play);

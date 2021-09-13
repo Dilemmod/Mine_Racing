@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CameraMoving : MonoBehaviour
 {
-
     [SerializeField] private Camera MainCamera;
     [SerializeField] private GameObject mainMenuPosition;
     [SerializeField] private GameObject playerMenuPosition;
@@ -21,7 +20,7 @@ public class CameraMoving : MonoBehaviour
         levelTarget,
         tuningTarget
     }
-    public MenuPosition moveTo= MenuPosition.mainTarget;
+    public MenuPosition moveTo = MenuPosition.mainTarget;
     bool stop = true;
     #region Singleton
     public static CameraMoving Instance;
@@ -46,7 +45,7 @@ public class CameraMoving : MonoBehaviour
         MoveCameraTo(moveTo);
         if (stop == true)
             return;
-        if (TimeToStop(mainMenuPosition)   ||
+        if (TimeToStop(mainMenuPosition) ||
             TimeToStop(playerMenuPosition) ||
             TimeToStop(tuningMenuPosition) ||
             TimeToStop(levelMenuPosition)
@@ -55,14 +54,11 @@ public class CameraMoving : MonoBehaviour
             Debug.Log("Stop");
             stop = true;
         }
+        else stop = false;
     }
     bool TimeToStop(GameObject obj)
     {
         return Vector3.Distance(MainCamera.transform.position, obj.transform.position) < 0.01f;
-    }
-    void ToPreviousMenu()
-    {
-        //if(moveTo==MenuPosition.tuningTarget|| moveTo == MenuPosition)
     }
     void MoveCameraTo(MenuPosition index)
     {
@@ -81,7 +77,6 @@ public class CameraMoving : MonoBehaviour
                 target = tuningMenuPosition;
                 break;
         }
-        stop = false;
         MainCamera.transform.position = Vector3.Lerp(transform.position, target.transform.position, speed * Time.deltaTime);
         MainCamera.transform.rotation = Quaternion.Lerp(transform.rotation, target.transform.rotation, speed * Time.deltaTime);
     }
