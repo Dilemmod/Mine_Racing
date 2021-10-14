@@ -4,32 +4,29 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using static CameraControllerMainMenu;
+using System;
 
 public class MainMenuController : BaseGameMenuController
 {
     [Header("Player menu")]
+    [SerializeField] private GameObject playerMenuButtons;
     [SerializeField] private GameObject levelMenu;
     [SerializeField] private GameObject tuningMenu;
     [SerializeField] private GameObject playerMenu;
+    [SerializeField] protected Button buttonBack;
     [SerializeField] protected Button buttonToLevelMenu;
     [SerializeField] protected Button buttonToTuningMenu;
-    [SerializeField] protected Button buttonToMainMenu;
-    [SerializeField] protected Button buttonToPlayerMenu;
 
-    [Header("Main menu")]
-    [SerializeField] protected Button more;
-
+    
     private CameraControllerMainMenu cameraControllerMainMenu;
-    //[SerializeField] protected Button closeLevelMenu;
     protected override void Start()
     {
         base.Start();
         cameraControllerMainMenu = CameraControllerMainMenu.Instance;
-        //buttonToLevelMenu.onClick.AddListener(OnLvlMenuClecked);
-        //closeLevelMenu.onClick.AddListener(OnLvlMenuClecked);
-        buttonToPlayerMenu.onClick.AddListener(OnPlayClecked);
-        buttonToMainMenu.onClick.AddListener(OnBackClecked);
-        //reset.onClick.AddListener(OnResetClicked);
+        play.onClick.AddListener(OnPlayClecked);
+        buttonBack.onClick.AddListener(OnBackClecked);
+        buttonToLevelMenu.onClick.AddListener(OnLevelMenuClecked);
+        buttonToTuningMenu.onClick.AddListener(OnTuningMenuClecked);
         /*
         if (PlayerPrefs.HasKey(GamePrefs.LastPlayedLvl.ToString()))
         {
@@ -42,44 +39,51 @@ public class MainMenuController : BaseGameMenuController
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        //reset.onClick.RemoveListener(levelManager.ResetProgres);
-       // buttonToLevelMenu.onClick.RemoveListener(OnLvlMenuClecked);
-        //closeLevelMenu.onClick.RemoveListener(OnLvlMenuClecked);
-    }
-    private void OnBackClecked()
-    {
-        //камера главного меню 
-        cameraControllerMainMenu.moveTo = MenuPosition.mainTarget;
-        ///стоп поворот
-        cameraControllerMainMenu.RotationSwitch();
-
-        playerMenu.SetActive(!playerMenu.activeInHierarchy);
-        audioManager.Play(UIClipName.Play);
-        //menu.SetActive(!menu.activeInHierarchy);
-        OnChangeMenuStatusClicked();
+        buttonBack.onClick.RemoveListener(OnBackClecked);
+        play.onClick.RemoveListener(OnPlayClecked);
+        buttonToLevelMenu.onClick.RemoveListener(OnLevelMenuClecked);
+        buttonToTuningMenu.onClick.RemoveListener(OnTuningMenuClecked);
     }
     private void OnPlayClecked()
     {
-        //камера главного игрока
-        cameraControllerMainMenu.moveTo = MenuPosition.playerTarget;
-        ///стоп поворот
-        cameraControllerMainMenu.RotationSwitch();
-
+        cameraControllerMainMenu.CameraPosition(MenuPosition.playerTarget);
         playerMenu.SetActive(!playerMenu.activeInHierarchy);
         audioManager.Play(UIClipName.Play);
-        //menu.SetActive(!menu.activeInHierarchy);
         OnChangeMenuStatusClicked();
     }
-    private void OnLvlMenuClecked()
+    private void OnBackClecked()
     {
+        if (playerMenuButtons.activeInHierarchy)
+        {
+            cameraControllerMainMenu.CameraPosition(MenuPosition.mainTarget);
+            playerMenu.SetActive(!playerMenu.activeInHierarchy);
+            OnChangeMenuStatusClicked();
+            audioManager.Play(UIClipName.Quit);
+        }
+        else
+        {
+            cameraControllerMainMenu.CameraPosition(MenuPosition.playerTarget);
+            ActiveMenu(playerMenuButtons);
+            audioManager.Play(UIClipName.Quit);
+        }
+    }
+    private void OnLevelMenuClecked()
+    {
+        cameraControllerMainMenu.CameraPosition(MenuPosition.levelTarget);
         audioManager.Play(UIClipName.LvlMenu);
-        levelMenu.SetActive(!levelMenu.activeInHierarchy);
-        OnChangeMenuStatusClicked();
+        ActiveMenu(levelMenu);
     }
-    private void OnResetClicked()
+    private void OnTuningMenuClecked()
     {
-        audioManager.Play(UIClipName.Reset);
-       // play.GetComponentInChildren<Text>().text = "NEW GAME";
-        levelManager.ResetProgres();
+        cameraControllerMainMenu.CameraPosition(MenuPosition.tuningTarget);
+        audioManager.Play(UIClipName.LvlMenu);
+        ActiveMenu(tuningMenu);
+    }
+    private void ActiveMenu(GameObject menu)
+    {
+        tuningMenu.SetActive(false);
+        levelMenu.SetActive(false);
+        playerMenuButtons.SetActive(false);
+        menu.SetActive(true);
     }
 }

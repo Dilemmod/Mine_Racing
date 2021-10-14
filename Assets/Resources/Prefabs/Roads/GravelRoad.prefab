@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7155334498565384345}
   - component: {fileID: 7155334498565384344}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: GravelRoad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f9898052a82071743959737d66d8f5d8, type: 2}
+  - {fileID: 2100000, guid: 842c041a33e0a2c47bae960ad93fa571, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
