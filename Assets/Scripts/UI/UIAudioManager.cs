@@ -50,4 +50,5 @@ public enum UIClipName
     Settings,
     Quit,
     BackgroundMusic,
+    Сongratulations
 }

@@ -13,6 +13,8 @@ TagManager:
   - Block 100
   - Block 500
   - BlocksParent
+  - LevelSize
+  - LevelRecord
   layers:
   - Default
   - TransparentFX

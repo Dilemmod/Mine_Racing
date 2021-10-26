@@ -24,6 +24,7 @@ public class CarController : MonoBehaviour
     [SerializeField] private Collider2D backWheelCollider2D;
     [SerializeField] private Collider2D frontWheelCollider2D;
     [SerializeField] private Collider2D roadCollider2D;
+     static private float startCarPositionX;
 
     [Header("Movement")]
     [SerializeField] private float speed = 1500f;
@@ -45,7 +46,8 @@ public class CarController : MonoBehaviour
 
     [Header("Coins")]
     [SerializeField] private Text textCoinsValue;
-    [SerializeField] public int countsOfCoins=0;
+    [SerializeField] public int countsOfCoins;
+    static private int startCountOfCoins;
 
     #region Singleton
     public static CarController Instance;
@@ -58,9 +60,11 @@ public class CarController : MonoBehaviour
             Destroy(gameObject);
     }
     #endregion
-
     private void Start()
     {
+        startCountOfCoins = countsOfCoins;
+        startCarPositionX = rb.position.x;
+        countsOfCoins = (PlayerPrefs.HasKey("PlayerCoins") ? PlayerPrefs.GetInt("PlayerCoins") : 0);
         //backWheelCollider2D = backWheel.gameObject.GetComponent<Collider2D>();
         //frontWheelCollider2D = frontWheel.gameObject.GetComponent<Collider2D>();
         fuel = maxFuel;
@@ -145,6 +149,10 @@ public class CarController : MonoBehaviour
     */
     public void OnDeath()
     {
+        int playerTravelDistance = (int)Math.Round(rb.transform.position.x - startCarPositionX);
+        playerTravelDistance = (playerTravelDistance > 0 ? playerTravelDistance : 0);
+        inGameMenuController.DistanceValue.text = playerTravelDistance.ToString();
+        inGameMenuController.CoinsValue.text = (countsOfCoins - startCountOfCoins).ToString();
         inGameMenuController.OnPlayerDeath();
     }
     public void OnWin()

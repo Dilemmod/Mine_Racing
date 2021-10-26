@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class InGameMenuController : BaseGameMenuController
@@ -16,6 +17,11 @@ public class InGameMenuController : BaseGameMenuController
 
     [Header("GameOver")]
     [SerializeField] private GameObject gameOverMenu;
+    [SerializeField] public Text gameOverHeader;
+    [SerializeField] public Text DistanceValue;
+    [SerializeField] public Text CoinsValue;
+    [SerializeField] public Text RecordValue;
+
 
     [Header("GameWin")]
     [SerializeField] private GameObject lvlComplete;
@@ -57,11 +63,25 @@ public class InGameMenuController : BaseGameMenuController
     {
         //-3.4 2.8 -14
         //-2.4 2 -8
+        //PlayerPrefs.SetInt(SceneManager.GetActiveScene().buildIndex+"PlayerRecord", );
+        RecordValue.text = PlayerPrefs.GetInt(SceneManager.GetActiveScene().buildIndex + "PlayerRecord").ToString();
+        int record = Convert.ToInt32(RecordValue.text);
+        int distanse = Convert.ToInt32(DistanceValue.text);
+        if (record<= distanse)
+        {
+            gameOverHeader.text = "NEW RECORD!";
+            gameOverHeader.color = new Color(135,148, 37);
+            RecordValue.text = distanse.ToString();
+            audioManager.Play(UIClipName.Сongratulations);
+            PlayerPrefs.SetInt(SceneManager.GetActiveScene().buildIndex + "PlayerRecord", distanse);
+        }
+        RecordValue.text += "m";
+        DistanceValue.text += "m";
         gameOverMenu.SetActive(true);
         Time.timeScale = 0;
     }
     public void OnPlayerWin(){
-        lvlComplete.SetActive(true);
-        Time.timeScale = 0;
+        //lvlComplete.SetActive(true);
+        //Time.timeScale = 0;
     }
 }
