@@ -24,6 +24,8 @@ public class SnapScrolling : MonoBehaviour
     [SerializeField] private GameObject levelPanelPrefab;
     [SerializeField] private ScrollRect scrollRect;
 
+    //private SceneTransition sceneTransition;
+
     private int selectedPanelID;
     private bool isScrolling;
 
@@ -36,6 +38,7 @@ public class SnapScrolling : MonoBehaviour
 
     private void Start()
     {
+        //sceneTransition = SceneTransition.Instance;
         //Clear the perent panel
         foreach (Transform child in transform) Destroy(child.gameObject);
 
@@ -69,7 +72,7 @@ public class SnapScrolling : MonoBehaviour
     }
     void OnChangeLevelClicked(int sceneBildIndex)
     {
-        LevelManager.Instance.ChangeLvl(sceneBildIndex);
+        SceneTransition.SwitchToScene(sceneBildIndex);
     }
     private void FixedUpdate()
     {
