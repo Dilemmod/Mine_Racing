@@ -20,11 +20,8 @@ public class SnapScrolling : MonoBehaviour
     [SerializeField] private float scaleSpeed;
 
     [Header("Objects")]
-    [SerializeField] private GameObject go;
     [SerializeField] private GameObject levelPanelPrefab;
     [SerializeField] private ScrollRect scrollRect;
-
-    //private SceneTransition sceneTransition;
 
     private int selectedPanelID;
     private bool isScrolling;
@@ -36,10 +33,11 @@ public class SnapScrolling : MonoBehaviour
     private RectTransform contentRect;
     private Vector2 contentVector;
 
+    private Animator componentAnimator;
+
     private void Start()
     {
-        //sceneTransition = SceneTransition.Instance;
-        //Clear the perent panel
+        componentAnimator = GetComponent<Animator>();
         foreach (Transform child in transform) Destroy(child.gameObject);
 
         countPanels = SceneManager.sceneCountInBuildSettings - 1;
@@ -48,10 +46,6 @@ public class SnapScrolling : MonoBehaviour
         arrayOfPanelsPosition = new Vector2[countPanels];
         arrayOfPanelsScale = new Vector2[countPanels];
 
-        //Resources.Load("Blocks/GravelBlock") as GameObject;
-        //Scene s = SceneManager.LoadScene(1);
-        //foreach(Scene in SceneManager.)
-        //Scene[] sc = EditorBuildSettings.scenes;
         for (int i = 0; i < countPanels; i++)
         {
             arrayOfPanels[i] = Instantiate(levelPanelPrefab, transform, false);
@@ -104,6 +98,10 @@ public class SnapScrolling : MonoBehaviour
             arrayOfPanelsPosition[selectedPanelID].x,
             snapSpeed*Time.fixedDeltaTime);
         contentRect.anchoredPosition = contentVector;
+    }
+    private void OnPanelOpening()
+    {
+
     }
     public void Scrolling(bool scroll)
     {

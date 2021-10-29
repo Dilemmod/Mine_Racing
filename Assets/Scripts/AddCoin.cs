@@ -10,7 +10,6 @@ public class AddCoin : MonoBehaviour
     private void Start()
     {
         carController = CarController.Instance;
-        PlayerPrefs.SetInt("PlayerCoins", carController.countsOfCoins);
     }
     private void FixedUpdate()
     {

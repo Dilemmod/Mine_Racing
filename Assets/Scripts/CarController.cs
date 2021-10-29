@@ -153,6 +153,7 @@ public class CarController : MonoBehaviour
         playerTravelDistance = (playerTravelDistance > 0 ? playerTravelDistance : 0);
         inGameMenuController.DistanceValue.text = playerTravelDistance.ToString();
         inGameMenuController.CoinsValue.text = (countsOfCoins - startCountOfCoins).ToString();
+        PlayerPrefs.SetInt("PlayerCoins",  (startCountOfCoins+ countsOfCoins));
         inGameMenuController.OnPlayerDeath();
     }
     public void OnWin()

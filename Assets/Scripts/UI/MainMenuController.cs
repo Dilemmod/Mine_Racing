@@ -17,7 +17,10 @@ public class MainMenuController : BaseGameMenuController
     [SerializeField] protected Button buttonToLevelMenu;
     [SerializeField] protected Button buttonToTuningMenu;
 
-    
+    [Header("Animators")]
+    [SerializeField] private Animator levelMenuAnimator;
+    [SerializeField] private Animator tuningMenuAnimator;
+
     private CameraControllerMainMenu cameraControllerMainMenu;
     protected override void Start()
     {
@@ -27,12 +30,10 @@ public class MainMenuController : BaseGameMenuController
         buttonBack.onClick.AddListener(OnBackClecked);
         buttonToLevelMenu.onClick.AddListener(OnLevelMenuClecked);
         buttonToTuningMenu.onClick.AddListener(OnTuningMenuClecked);
-        /*
-        if (PlayerPrefs.HasKey(GamePrefs.LastPlayedLvl.ToString()))
+        if (PlayerPrefs.HasKey("PlayerCoins"))
         {
-            play.GetComponentInChildren<Text>().text = "CONTINUE";
-            lvl = PlayerPrefs.GetInt(GamePrefs.LastPlayedLvl.ToString());
-        }*/
+            //playerMenu.transform.GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().text = PlayerPrefs.GetString("PlayerCoins");
+        }
 
         audioManager.Play(UIClipName.BackgroundMusic);
     }
@@ -62,8 +63,12 @@ public class MainMenuController : BaseGameMenuController
         }
         else
         {
+            if (levelMenu.activeInHierarchy)
+                levelMenuAnimator.SetTrigger("Close");
+            else if (tuningMenu.activeInHierarchy)
+                tuningMenuAnimator.SetTrigger("Close");
             cameraControllerMainMenu.CameraPosition(MenuPosition.playerTarget);
-            ActiveMenu(playerMenuButtons);
+            playerMenuButtons.SetActive(true);
             audioManager.Play(UIClipName.Quit);
         }
     }
