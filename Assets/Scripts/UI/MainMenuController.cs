@@ -20,21 +20,21 @@ public class MainMenuController : BaseGameMenuController
     [Header("Animators")]
     [SerializeField] private Animator levelMenuAnimator;
     [SerializeField] private Animator tuningMenuAnimator;
+    [SerializeField] private Animator playerMenuAnimator;
+    [SerializeField] private Animator mainMenuAnimator;
 
     private CameraControllerMainMenu cameraControllerMainMenu;
+    
     protected override void Start()
     {
         base.Start();
-        cameraControllerMainMenu = CameraControllerMainMenu.Instance;
+        cameraControllerMainMenu = Instance;
         play.onClick.AddListener(OnPlayClecked);
         buttonBack.onClick.AddListener(OnBackClecked);
         buttonToLevelMenu.onClick.AddListener(OnLevelMenuClecked);
         buttonToTuningMenu.onClick.AddListener(OnTuningMenuClecked);
         if (PlayerPrefs.HasKey("PlayerCoins"))
-        {
-            //playerMenu.transform.GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().text = PlayerPrefs.GetString("PlayerCoins");
-        }
-
+            playerMenu.transform.GetChild(1).GetChild(0).GetChild(0).GetChild(2).GetComponent<Text>().text = PlayerPrefs.GetInt("PlayerCoins").ToString();
         audioManager.Play(UIClipName.BackgroundMusic);
     }
     protected override void OnDestroy()
@@ -47,48 +47,53 @@ public class MainMenuController : BaseGameMenuController
     }
     private void OnPlayClecked()
     {
+        mainMenuAnimator.SetTrigger("Close");
+        playerMenuAnimator.SetTrigger("Open");
         cameraControllerMainMenu.CameraPosition(MenuPosition.playerTarget);
-        playerMenu.SetActive(!playerMenu.activeInHierarchy);
+        OnChangePlayerMenuStatus();
         audioManager.Play(UIClipName.Play);
-        OnChangeMenuStatusClicked();
     }
     private void OnBackClecked()
     {
-        if (playerMenuButtons.activeInHierarchy)
+        switch (cameraControllerMainMenu.moveTo)
         {
-            cameraControllerMainMenu.CameraPosition(MenuPosition.mainTarget);
-            playerMenu.SetActive(!playerMenu.activeInHierarchy);
-            OnChangeMenuStatusClicked();
-            audioManager.Play(UIClipName.Quit);
-        }
-        else
-        {
-            if (levelMenu.activeInHierarchy)
+            case (MenuPosition.playerTarget):
+                mainMenuAnimator.SetTrigger("Open");
+                playerMenuAnimator.SetTrigger("Close");
+                cameraControllerMainMenu.CameraPosition(MenuPosition.mainTarget);
+                break;
+            case (MenuPosition.levelTarget):
                 levelMenuAnimator.SetTrigger("Close");
-            else if (tuningMenu.activeInHierarchy)
+                cameraControllerMainMenu.CameraPosition(MenuPosition.playerTarget);
+                break;
+            case (MenuPosition.tuningTarget):
                 tuningMenuAnimator.SetTrigger("Close");
-            cameraControllerMainMenu.CameraPosition(MenuPosition.playerTarget);
-            playerMenuButtons.SetActive(true);
-            audioManager.Play(UIClipName.Quit);
+                cameraControllerMainMenu.CameraPosition(MenuPosition.playerTarget);
+                break;
         }
+        audioManager.Play(UIClipName.Quit);
+        OnChangePlayerMenuStatus();
     }
     private void OnLevelMenuClecked()
     {
         cameraControllerMainMenu.CameraPosition(MenuPosition.levelTarget);
         audioManager.Play(UIClipName.LvlMenu);
-        ActiveMenu(levelMenu);
+        levelMenuAnimator.SetTrigger("Open");
+        OnChangePlayerMenuStatus();
     }
     private void OnTuningMenuClecked()
     {
         cameraControllerMainMenu.CameraPosition(MenuPosition.tuningTarget);
         audioManager.Play(UIClipName.LvlMenu);
-        ActiveMenu(tuningMenu);
+        tuningMenuAnimator.SetTrigger("Open");
+        OnChangePlayerMenuStatus();
     }
-    private void ActiveMenu(GameObject menu)
+    private void OnTriggerAnimator()
     {
-        tuningMenu.SetActive(false);
-        levelMenu.SetActive(false);
-        playerMenuButtons.SetActive(false);
-        menu.SetActive(true);
+
+    }
+    private void OnChangePlayerMenuStatus()
+    {
+        playerMenuButtons.SetActive(!playerMenuButtons.activeInHierarchy);
     }
 }

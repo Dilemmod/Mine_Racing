@@ -10,9 +10,7 @@ public class SceneTransition : MonoBehaviour
     [SerializeField] private Image loadingProgressBar;
     private GameObject backgroundImage;
     private GameObject loadingBlock;
-
     private static bool shouldPlayOpeningAnimation = false;
-
     private Animator componentAnimator;
     private AsyncOperation loadingSceneOperetion;
     #region Singleton
@@ -24,12 +22,6 @@ public class SceneTransition : MonoBehaviour
         else Destroy(gameObject);
     }
     #endregion
-    public static void SwitchToScene(int sceneID)
-    {
-        Instance.componentAnimator.SetTrigger("sceneClosing");
-        Instance.loadingSceneOperetion = SceneManager.LoadSceneAsync(sceneID);
-        Instance.loadingSceneOperetion.allowSceneActivation = false;
-    }
     private void Start()
     {
         backgroundImage = transform.GetChild(0).gameObject;
@@ -45,6 +37,22 @@ public class SceneTransition : MonoBehaviour
             loadingProgressBar.fillAmount = loadingSceneOperetion.progress;
         }
     }
+    public static void SwitchToScene(int sceneID)
+    {
+        Debug.Log("Swich");
+        Instance.componentAnimator.SetTrigger("sceneClosing");
+        Instance.loadingSceneOperetion = SceneManager.LoadSceneAsync(sceneID);
+        Instance.loadingSceneOperetion.allowSceneActivation = false;
+    }
+    public static void Restart()
+    {
+        SwitchToScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    public static void QuitToDesktop()
+    {
+        Application.Quit();
+        Debug.Log("QUIT");
+    }
     private void OnAnimationClosingOver()
     {
         shouldPlayOpeningAnimation = true;
@@ -52,7 +60,7 @@ public class SceneTransition : MonoBehaviour
     }
     private void OnAnimationOpeningOver()
     {
-         backgroundImage.SetActive(false);
+        backgroundImage.SetActive(false);
         loadingBlock.SetActive(false);
     }
 }

@@ -18,8 +18,8 @@ public class CameraControllerMainMenu : MonoBehaviour
     [SerializeField] private GameObject playerMenuPosition;
     [SerializeField] private GameObject levelMenuPosition;
     [SerializeField] private GameObject tuningMenuPosition;
+    [SerializeField] private int speed = 1;
     private GameObject target;
-    public int speed = 1;
     bool stop = true;
     public enum MenuPosition
     {
@@ -28,7 +28,7 @@ public class CameraControllerMainMenu : MonoBehaviour
         levelTarget,
         tuningTarget
     }
-    public MenuPosition moveTo = MenuPosition.mainTarget;
+    [SerializeField] public MenuPosition moveTo = MenuPosition.mainTarget;
     private MenuPosition moveTarget;
     private MenuPosition tempMoveTo;
     #region Singleton
@@ -105,15 +105,6 @@ public class CameraControllerMainMenu : MonoBehaviour
             }
         }
         //CameraMove
-        /*
-        if (Input.GetKey(KeyCode.W))
-            moveTo = MenuPosition.playerTarget;
-        if (Input.GetKey(KeyCode.A))
-            moveTo = MenuPosition.levelTarget;
-        if (Input.GetKey(KeyCode.D))
-            moveTo = MenuPosition.tuningTarget;
-        if (Input.GetKey(KeyCode.S))
-            moveTo = MenuPosition.mainTarget;*/
         if (tempMoveTo != moveTo) 
         {
             moveTarget = moveTo;
@@ -121,7 +112,7 @@ public class CameraControllerMainMenu : MonoBehaviour
         stop = (TimeToStop(moveTarget) ? true : false);
         if (!stop)
             MoveCameraTo(moveTo);
-        Debug.Log("stop = " + stop);
-        Debug.Log("rotationOn = " + rotateOn);
+        //Debug.Log("stop = " + stop);
+       // Debug.Log("rotationOn = " + rotateOn);
     }
 }

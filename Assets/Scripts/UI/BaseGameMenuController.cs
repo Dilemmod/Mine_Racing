@@ -6,9 +6,7 @@ using UnityEngine.UI;
 
 public class BaseGameMenuController : MonoBehaviour
 {
-    protected LevelManager levelManager;
     protected UIAudioManager audioManager;
-
     [SerializeField] protected GameObject menu;
 
     [Header("MainButttons")]
@@ -22,7 +20,6 @@ public class BaseGameMenuController : MonoBehaviour
     
     protected virtual void Start()
     {
-        levelManager = LevelManager.Instance;
         audioManager = UIAudioManager.Instance;
         quit.onClick.AddListener(OnQuitClicked);
         settings.onClick.AddListener(OnSettingsClicked);
@@ -39,6 +36,7 @@ public class BaseGameMenuController : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Escape))
             OnChangeMenuStatusClicked();
     }
+  
     protected virtual void OnChangeMenuStatusClicked()
     {
         menu.SetActive(!menu.activeInHierarchy);
@@ -51,6 +49,7 @@ public class BaseGameMenuController : MonoBehaviour
     private void OnQuitClicked()
     {
         audioManager.Play(UIClipName.Quit);
-        levelManager.Quit();
+        OnChangeMenuStatusClicked();
+        SceneTransition.QuitToDesktop();
     }
 }

@@ -30,10 +30,10 @@ public class InGameMenuController : BaseGameMenuController
     {
         base.Start();
         play.onClick.AddListener(OnChangeMenuStatusClicked);
-        restart.onClick.AddListener(levelManager.Restart);
-        restart1.onClick.AddListener(levelManager.Restart);
-        restart2.onClick.AddListener(levelManager.Restart);
-        nextLvl.onClick.AddListener(levelManager.EndLevel);
+        restart.onClick.AddListener(OnRestartClicked);
+        restart1.onClick.AddListener(OnRestartClicked);
+        restart2.onClick.AddListener(OnRestartClicked);
+        //nextLvl.onClick.AddListener(levelManager.EndLevel);
         backToMenu.onClick.AddListener(OnGoToMainMenuClicked);
         backToMenu1.onClick.AddListener(OnGoToMainMenuClicked);
     }
@@ -42,12 +42,17 @@ public class InGameMenuController : BaseGameMenuController
     {
         base.OnDestroy();
         play.onClick.RemoveListener(OnChangeMenuStatusClicked);
-        restart.onClick.RemoveListener(levelManager.Restart);
-        restart1.onClick.RemoveListener(levelManager.Restart);
-        restart2.onClick.RemoveListener(levelManager.Restart);
-        nextLvl.onClick.RemoveListener(levelManager.EndLevel);
+        restart.onClick.RemoveListener(OnRestartClicked);
+        restart1.onClick.RemoveListener(OnRestartClicked);
+        restart2.onClick.RemoveListener(OnRestartClicked);
+       // nextLvl.onClick.RemoveListener(levelManager.EndLevel);
         backToMenu.onClick.RemoveListener(OnGoToMainMenuClicked);
         backToMenu1.onClick.RemoveListener(OnGoToMainMenuClicked);
+    }
+    private void OnRestartClicked()
+    {
+        OnChangeMenuStatusClicked();
+        SceneTransition.Restart();
     }
     protected override void OnChangeMenuStatusClicked()
     {
@@ -57,7 +62,8 @@ public class InGameMenuController : BaseGameMenuController
 
     public void OnGoToMainMenuClicked()
     {
-        LevelManager.Instance.ChangeLvl((int)Scenes.MainMenu);
+        OnChangeMenuStatusClicked();
+        SceneTransition.SwitchToScene(0);
     }
     public void OnPlayerDeath()
     {
@@ -67,7 +73,7 @@ public class InGameMenuController : BaseGameMenuController
         RecordValue.text = PlayerPrefs.GetInt(SceneManager.GetActiveScene().buildIndex + "PlayerRecord").ToString();
         int record = Convert.ToInt32(RecordValue.text);
         int distanse = Convert.ToInt32(DistanceValue.text);
-        if (record<= distanse)
+        if (record <= distanse) 
         {
             gameOverHeader.text = "NEW RECORD!";
             gameOverHeader.color = new Color(135,148, 37);

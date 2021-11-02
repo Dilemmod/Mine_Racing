@@ -64,10 +64,6 @@ public class SnapScrolling : MonoBehaviour
             arrayOfPanelsPosition[i] = -arrayOfPanels[i].transform.localPosition;
         }
     }
-    void OnChangeLevelClicked(int sceneBildIndex)
-    {
-        SceneTransition.SwitchToScene(sceneBildIndex);
-    }
     private void FixedUpdate()
     {
         if (contentRect.anchoredPosition.x >= arrayOfPanelsPosition[0].x && !isScrolling ||
@@ -99,9 +95,9 @@ public class SnapScrolling : MonoBehaviour
             snapSpeed*Time.fixedDeltaTime);
         contentRect.anchoredPosition = contentVector;
     }
-    private void OnPanelOpening()
+    public void OnChangeLevelClicked(int sceneBildIndex)
     {
-
+        SceneTransition.SwitchToScene(sceneBildIndex);
     }
     public void Scrolling(bool scroll)
     {
