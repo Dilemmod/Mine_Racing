@@ -39,7 +39,7 @@ public class SceneTransition : MonoBehaviour
     }
     public static void SwitchToScene(int sceneID)
     {
-        Debug.Log("Swich");
+        //Debug.Log("Swich");
         Instance.componentAnimator.SetTrigger("sceneClosing");
         Instance.loadingSceneOperetion = SceneManager.LoadSceneAsync(sceneID);
         Instance.loadingSceneOperetion.allowSceneActivation = false;

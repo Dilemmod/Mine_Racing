@@ -8,12 +8,9 @@ using UnityEngine.UI;
 public class InGameMenuController : BaseGameMenuController
 {
     [Header("Buttons")]
-    [SerializeField] private Button restart;
-    [SerializeField] private Button restart1;
-    [SerializeField] private Button restart2;
-    [SerializeField] private Button nextLvl;
+    [SerializeField] private Button restartGameMenu;
+    [SerializeField] private Button restartGameOver;
     [SerializeField] private Button backToMenu;
-    [SerializeField] private Button backToMenu1;
 
     [Header("GameOver")]
     [SerializeField] private GameObject gameOverMenu;
@@ -23,35 +20,29 @@ public class InGameMenuController : BaseGameMenuController
     [SerializeField] public Text RecordValue;
 
 
-    [Header("GameWin")]
-    [SerializeField] private GameObject lvlComplete;
+    //[Header("GameWin")]
+    //[SerializeField] private GameObject lvlComplete;
     //[SerializeField] private Camera playerCamera;
     protected override void Start()
     {
         base.Start();
         play.onClick.AddListener(OnChangeMenuStatusClicked);
-        restart.onClick.AddListener(OnRestartClicked);
-        restart1.onClick.AddListener(OnRestartClicked);
-        restart2.onClick.AddListener(OnRestartClicked);
-        //nextLvl.onClick.AddListener(levelManager.EndLevel);
+        restartGameMenu.onClick.AddListener(OnRestartClicked);
+        restartGameOver.onClick.AddListener(OnRestartClicked);
         backToMenu.onClick.AddListener(OnGoToMainMenuClicked);
-        backToMenu1.onClick.AddListener(OnGoToMainMenuClicked);
     }
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
         play.onClick.RemoveListener(OnChangeMenuStatusClicked);
-        restart.onClick.RemoveListener(OnRestartClicked);
-        restart1.onClick.RemoveListener(OnRestartClicked);
-        restart2.onClick.RemoveListener(OnRestartClicked);
-       // nextLvl.onClick.RemoveListener(levelManager.EndLevel);
+        restartGameMenu.onClick.RemoveListener(OnRestartClicked);
+        restartGameOver.onClick.RemoveListener(OnRestartClicked);
         backToMenu.onClick.RemoveListener(OnGoToMainMenuClicked);
-        backToMenu1.onClick.RemoveListener(OnGoToMainMenuClicked);
     }
     private void OnRestartClicked()
     {
-        OnChangeMenuStatusClicked();
+        Time.timeScale = 1;
         SceneTransition.Restart();
     }
     protected override void OnChangeMenuStatusClicked()
@@ -85,9 +76,5 @@ public class InGameMenuController : BaseGameMenuController
         DistanceValue.text += "m";
         gameOverMenu.SetActive(true);
         Time.timeScale = 0;
-    }
-    public void OnPlayerWin(){
-        //lvlComplete.SetActive(true);
-        //Time.timeScale = 0;
     }
 }

@@ -155,9 +155,9 @@ public class CarController : MonoBehaviour
         inGameMenuController.CoinsValue.text = (countsOfCoins - startCountOfCoins).ToString();
         PlayerPrefs.SetInt("PlayerCoins",  (startCountOfCoins+ countsOfCoins));
         inGameMenuController.OnPlayerDeath();
-    }
+    }/*
     public void OnWin()
     {
         inGameMenuController.OnPlayerWin();
-    }
+    }*/
 }

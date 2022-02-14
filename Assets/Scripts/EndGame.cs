@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class EndGame : MonoBehaviour
 {
     private CarController carController;
@@ -17,7 +18,7 @@ public class EndGame : MonoBehaviour
             carController.OnDeath();
         }else if (colInfo.CompareTag("Finish"))
         {
-            carController.OnWin();
+            //carController.OnWin();
         }
     }
 }
