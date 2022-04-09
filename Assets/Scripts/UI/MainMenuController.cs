@@ -88,10 +88,6 @@ public class MainMenuController : BaseGameMenuController
         tuningMenuAnimator.SetTrigger("Open");
         OnChangePlayerMenuStatus();
     }
-    private void OnTriggerAnimator()
-    {
-
-    }
     private void OnChangePlayerMenuStatus()
     {
         playerMenuButtons.SetActive(!playerMenuButtons.activeInHierarchy);
