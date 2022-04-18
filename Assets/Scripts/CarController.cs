@@ -16,14 +16,16 @@ public class CarController : MonoBehaviour
     [SerializeField] private InGameMenuController inGameMenuController;
     [SerializeField] private WheelJoint2D backWheel;
     [SerializeField] private WheelJoint2D frontWheel;
-    [SerializeField] private Rigidbody2D rbBackWheel;
-    [SerializeField] private Rigidbody2D rbFrontWheel;
+    //[SerializeField] private Rigidbody2D rbBackWheel;
+    //[SerializeField] private Rigidbody2D rbFrontWheel;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private UIButtonInfo gasButton;
     [SerializeField] private UIButtonInfo breakButton;
-    [SerializeField] private Collider2D backWheelCollider2D;
-    [SerializeField] private Collider2D frontWheelCollider2D;
-    [SerializeField] private Collider2D roadCollider2D;
+    [SerializeField] private GameObject ObjectBackWheel;
+    [SerializeField] private GameObject ObjectFrontWheel;
+    [NonSerialized] private Collider2D backWheelCollider2D;
+    [NonSerialized] private Collider2D frontWheelCollider2D;
+    //[SerializeField] private Collider2D roadCollider2D;
      static private float startCarPositionX;
 
     [Header("Movement")]
@@ -62,6 +64,8 @@ public class CarController : MonoBehaviour
     #endregion
     private void Start()
     {
+        backWheelCollider2D = ObjectBackWheel.gameObject.GetComponent<Collider2D>();
+        frontWheelCollider2D = ObjectFrontWheel.gameObject.GetComponent<Collider2D>();
         startCountOfCoins = countsOfCoins;
         startCarPositionX = rb.position.x;
         countsOfCoins = (PlayerPrefs.HasKey("PlayerCoins") ? PlayerPrefs.GetInt("PlayerCoins") : 0);
@@ -73,18 +77,16 @@ public class CarController : MonoBehaviour
     }
     private void Update()
     {
-        if (frontWheelCollider2D.IsTouching(roadCollider2D) || backWheelCollider2D.IsTouching(roadCollider2D))
+        
+        if (frontWheelCollider2D.IsTouchingLayers(LayerMask.GetMask("Ground")) 
+            || backWheelCollider2D.IsTouchingLayers(LayerMask.GetMask("Ground")))
             isGrounded = true;
         else
             isGrounded = false;
-        // rotation = -Input.GetAxisRaw("Horizontal");
-        //Debug.Log(Input.GetAxisRaw("Horizontal"));
     }
     
     private void FixedUpdate()
     {
-        //acceleration = Input.acceleration;
-
         if (gasButton.isDown|| Input.GetAxisRaw("Horizontal")==1)
             direction = -1f ;
         else if (breakButton.isDown|| Input.GetAxisRaw("Horizontal") == -1)
@@ -138,15 +140,18 @@ public class CarController : MonoBehaviour
             rotation = Input.GetAxisRaw("Horizontal");
         textCoinsValue.text = countsOfCoins.ToString();
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    *//*
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        grounded = true;
+        isGrounded = true;
+        Debug.Log(other.gameObject.name);
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        grounded = false ;
-    }
-    */
+        isGrounded = false ;
+        Debug.Log(isGrounded);
+    }*/
+    
     public void OnDeath()
     {
         int playerTravelDistance = (int)Math.Round(rb.transform.position.x - startCarPositionX);

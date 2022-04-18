@@ -38,8 +38,9 @@ public class MapCreator : MonoBehaviour
     {
         for (int i = 0; i < edgCollider2D.pointCount-1; i++)
         {
-            pointA = edgCollider2D.points[i];
-            pointB = edgCollider2D.points[i+1] ;
+            
+            pointA = new Vector2(edgCollider2D.points[i].x + this.transform.position.x, edgCollider2D.points[i].y + this.transform.position.y);
+            pointB = new Vector2(edgCollider2D.points[i+1].x + this.transform.position.x, edgCollider2D.points[i+1].y + this.transform.position.y);
             //1.75 - 0.5 = 1.25 для точного размешения блоков
             pointA.z = -0.5f;
             pointB.z = -0.5f;

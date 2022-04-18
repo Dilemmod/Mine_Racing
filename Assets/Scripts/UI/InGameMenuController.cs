@@ -43,7 +43,8 @@ public class InGameMenuController : BaseGameMenuController
     private void OnRestartClicked()
     {
         Time.timeScale = 1;
-        SceneTransition.Restart();
+        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+        //SceneTransition.Restart();
     }
     protected override void OnChangeMenuStatusClicked()
     {
